@@ -1,0 +1,31 @@
+{
+    {}
+    {
+        {-1} ref
+        {-1} add
+            {fib}
+        get
+        do
+        {-2}
+        pick
+        {-2}
+        add
+        {fib}
+        get
+        do
+        add
+    }
+    {-3}
+    ref
+    {1}
+    lt
+    if
+    do
+}
+{fib}
+set
+{25}
+{fib}
+get
+do
+print
