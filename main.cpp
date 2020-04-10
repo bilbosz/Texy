@@ -1,14 +1,14 @@
-#include "TexyInterpreter.hpp"
+#include "Interpreter.hpp"
 #include <iostream>
 
 int main( int argc, char* argv[] )
 {
-    if( argc == 1 )
+    if( argc <= 1 )
     {
-        std::cout << "Texy Interpreter\nUsage: texy cmd [arg] ...";
+        std::cout << "Text Machine\nUsage: text-machine cmd [arg] ...";
         return EXIT_SUCCESS;
     }
-    TexyInterpreter interpreter;
+    Interpreter interpreter;
     Stack stack{};
     for( int i = 2; i < argc; ++i )
     {

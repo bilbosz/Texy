@@ -2,16 +2,16 @@
 // Created by ake on 01.04.2020.
 //
 
-#include "TexyInterpreter.hpp"
+#include "Interpreter.hpp"
 #include <cassert>
 #include <iostream>
 
-void TexyInterpreter::Interpret( std::string_view code, Stack& stack )
+void Interpreter::Interpret( std::string_view code, Stack& stack )
 {
     Evaluate( Parse( code ), stack );
 }
 
-Symbols TexyInterpreter::Parse( std::string_view code )
+Symbols Interpreter::Parse( std::string_view code )
 {
     Symbols symbols;
     auto it = code.cbegin();
@@ -85,7 +85,7 @@ Symbols TexyInterpreter::Parse( std::string_view code )
     return symbols;
 }
 
-void TexyInterpreter::Evaluate( const Symbols& symbols, Stack& stack )
+void Interpreter::Evaluate( const Symbols& symbols, Stack& stack )
 {
     auto it = symbols.cbegin();
     while( it != symbols.cend() )
@@ -93,35 +93,41 @@ void TexyInterpreter::Evaluate( const Symbols& symbols, Stack& stack )
         if( ( *it )[0] == '{' )
         {
             stack.emplace_back( it->cbegin() + 1, it->cend() - 1 );
-//            std::cout << "Added {" << stack.back() << "}\n";
-//            DumpStack( stack );
-//            Dummy();
+            //            std::cout << "Added {" << stack.back() << "}\n";
+            //            DumpStack( stack );
+            //            Dummy();
         }
         else
         {
-//            std::cout << "Executing " << *it << "\n";
-//            DumpStack( stack );
+            //            std::cout << "Executing " << *it << "\n";
+            //            DumpStack( stack );
             ExecuteCommand( *it, stack );
         }
         ++it;
     }
-//    std::cout << "Finished executing" << "\n";
-//    DumpStack( stack );
+    //    std::cout << "Finished executing\n";
+    //    DumpStack( stack );
 }
 
-void TexyInterpreter::ExecuteCommand( const std::string_view& command, Stack& stack )
+void Interpreter::ExecuteCommand( const std::string_view& command, Stack& stack )
 {
-    m_commands.Get( command )( stack );
+    CommandExecutable cmd = m_commands.Get( command );
+    if( cmd )
+    {
+        cmd( stack );
+        return;
+    }
+    Interpret( m_variables.Get( command ), stack );
 }
 
-TexyInterpreter::TexyInterpreter() : m_commands( this ), m_variables() {}
+Interpreter::Interpreter() : m_commands( this ), m_variables() {}
 
-void TexyInterpreter::DumpStack( Stack& stack )
+void Interpreter::DumpStack( Stack& stack )
 {
     std::cout << "\tStack:\n";
     auto it = stack.rbegin();
-    for( ; it != stack.rend(); ++it )
+    for( int i = 0; it != stack.rend(); ++it, ++i )
     {
-        std::cout << "\t\t{" << *it << "}\n";
+        std::cout << "\t\t" << i << ". {" << *it << "}\n";
     }
 }

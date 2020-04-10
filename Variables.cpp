@@ -6,16 +6,18 @@
 
 void Variables::Set( std::string_view name, std::string_view value )
 {
-    // TODO use find
-    m_registred[static_cast< std::string >( name )] = value;
+    m_registred.insert( std::make_pair( name, value ) );
 }
 
 std::string Variables::Get( std::string_view name )
 {
-    return m_registred[static_cast< std::string >( name )];
+    auto it = m_registred.find( name );
+    assert( it != m_registred.cend() );
+    return it->second;
 }
 
-void Variables::Remove( std::string_view name ) {
+void Variables::Remove( std::string_view name )
+{
     auto it = m_registred.find( name );
     assert( it != m_registred.cend() );
     m_registred.erase( it );

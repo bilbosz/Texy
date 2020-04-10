@@ -14,10 +14,10 @@
 #include <string_view>
 #include <vector>
 
-class TexyInterpreter
+class Interpreter
 {
 public:
-    TexyInterpreter();
+    Interpreter();
     void Interpret( std::string_view code, Stack& stack );
     Symbols Parse( std::string_view code );
     void Evaluate( const Symbols& symbols, Stack& stack );

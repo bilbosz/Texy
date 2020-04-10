@@ -7,12 +7,12 @@
 
 #include "Global.hpp"
 
-class TexyInterpreter;
+class Interpreter;
 
 class Commands
 {
 public:
-    explicit Commands( TexyInterpreter* interpreter );
+    explicit Commands( Interpreter* interpreter );
     CommandExecutable Get( std::string_view name );
 
 private:
@@ -25,9 +25,10 @@ private:
     void Pick( Stack& stack );
     void Add( Stack& stack );
     void Print( Stack& stack );
+    void DoFile( Stack& stack );
 
     std::map< std::string, CommandExecutable, std::less<> > m_registred;
-    TexyInterpreter* m_interpreter;
+    Interpreter* m_interpreter;
 };
 
 #endif //TEXY_COMMANDS_HPP

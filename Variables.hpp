@@ -7,7 +7,7 @@
 
 #include "Global.hpp"
 #include <string_view>
-class TexyInterpreter;
+class Interpreter;
 
 class Variables
 {
